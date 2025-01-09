@@ -1,9 +1,10 @@
+import Expenses from "./Expenses"
 
 export const Home = () => {
 
     return (
         <div> 
-           Home babe
+           <Expenses/>
         </div>
     )
 }

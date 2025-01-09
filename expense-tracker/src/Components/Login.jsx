@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Alert } from './Alert'
 
 
 const Login = (props) => {
@@ -7,7 +8,7 @@ const Login = (props) => {
     let navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        let s = '/api/users/validate?email=' + credentials.email + '&password=' + credentials.password;
+        let s = 'http://localhost:8080/api/users/validate?email=' + credentials.email + '&password=' + credentials.password;
         e.preventDefault();
         const response = await fetch(s,
          {
@@ -21,12 +22,14 @@ const Login = (props) => {
         console.log(json);
         if (json.success){
             // Save the auth token and redirect
+            alert(json.message);
             localStorage.setItem('token', json.data); 
-            navigate.push("/");
+            navigate("/");
 
         }
-        else{
-            alert("Invalid credentials");
+        else {
+           //<Alert message = json />
+            alert(json.error);
         }
     }
 

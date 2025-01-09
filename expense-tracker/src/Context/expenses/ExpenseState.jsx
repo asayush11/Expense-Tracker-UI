@@ -9,7 +9,7 @@ const ExpenseState = (props) => {
   // Get all Expenses
   const getExpenses = async () => {
     // API Call 
-    const response = await fetch(`${host}/api/expenses/view`, {
+    const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const ExpenseState = (props) => {
   const addExpense = async (title, description, tag) => {
     // TODO: API Call
     // API Call 
-    const response = await fetch(`${host}/api/expenses/addexpense`, {
+    const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const ExpenseState = (props) => {
   // Delete a Expense
   const deleteExpense = async (id) => {
     // API Call
-    const response = await fetch(`${host}/api/expenses/deleteexpense/${id}`, {
+    const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const ExpenseState = (props) => {
   // Edit a Expense
   const editExpense = async (id, title, description, tag) => {
     // API Call 
-    const response = await fetch(`${host}/api/expenses/updateexpense/${id}`, {
+    const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

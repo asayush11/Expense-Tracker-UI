@@ -9,7 +9,7 @@ import {
   Route
 } from "react-router-dom";
 import Navbar from './Components/Navbar';
-import ExpenseState from './Contexts/ExpenseState';
+import ExpenseState from './Context/expenses/ExpenseState';
 import { Alert } from './Components/Alert';
 import { Home } from './Components/Home';
 import About from './Components/About';
@@ -31,31 +31,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </ExpenseState>
-  /*  <>
-      <ExpenseState>
-        <Router>
-          <Navbar />
-          <Alert message="Welcome to my Expense Tracker App" />
-          <div className="container">
-            <Routes>
-              <Route path="/" element={<Home />}>
-                <Home />
-              </Route>
-              <Route exact path="/about">
-                <About />
-              </Route>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/signup">
-                <Signup />
-              </Route>
-            </Routes>
-          </div>
-        </Router>
-      </ExpenseState>
-    </>*/
+    </ExpenseState>  
   );
 }
 
