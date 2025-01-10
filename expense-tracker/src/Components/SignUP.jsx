@@ -25,8 +25,10 @@ const Signup = () => {
         if (json.success){
             // Save the auth token and redirect
             localStorage.setItem('token', json.data); 
+            localStorage.setItem('isLoggedIn',true);
+            localStorage.setItem('email',credentials.email);
             alert(json.message);
-            navigate("/");
+            navigate("/userHome");
 
         }
         else {

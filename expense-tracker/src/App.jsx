@@ -15,10 +15,15 @@ import { Home } from './Components/Home';
 import About from './Components/About';
 import Login from './Components/Login';
 import Signup from './Components/SignUP';
+import UserHome from './Components/UserHome';
+import DeleteAccount from './Components/DeleteAccount';
 
 function App() {
+  localStorage.setItem('token',"");
+  localStorage.setItem('isLoggedIn',false);
+  localStorage.setItem('email',"");
   return (
-    <ExpenseState>
+    <ExpenseState>      
       <Router>
         <Navbar />
         <Alert message="Welcome to my Expense Tracker App" />
@@ -28,6 +33,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/deleteAccount" element={<DeleteAccount />} />
+            <Route path="/userHome" element={<UserHome />} />
           </Routes>
         </div>
       </Router>

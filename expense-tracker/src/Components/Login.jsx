@@ -24,7 +24,9 @@ const Login = (props) => {
             // Save the auth token and redirect
             alert(json.message);
             localStorage.setItem('token', json.data); 
-            navigate("/");
+            localStorage.setItem('isLoggedIn',true);
+            localStorage.setItem('email',credentials.email);
+            navigate("/userHome");
 
         }
         else {

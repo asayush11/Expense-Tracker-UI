@@ -15,16 +15,18 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname==="/"? "active": ""}`} aria-current="page" to="/">Home</Link>
+                            <Link className={`nav-link ${location.pathname==="/"? "active": ""}`} aria-current="page" to="/" hidden={localStorage.getItem('isLoggedIn') === "true" } >Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname==="/about"? "active": ""}`} to="/about">About</Link>
+                            <Link className={`nav-link ${location.pathname==="/about"? "active": ""}`} to="/about" hidden={localStorage.getItem('isLoggedIn') === "true" } >About</Link>
                         </li>
 
                     </ul>
-                    <form className="d-flex"> 
-                    <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
-                    <Link className="btn btn-primary mx-2" to="/signup" role="button">Signup</Link>
+                    <form className="d-flex">  
+                    <Link className="btn btn-primary mx-1" to="/deleteAccount" role="button" hidden={localStorage.getItem('isLoggedIn') === "false" }>Delete Account</Link>    
+                    <Link className="btn btn-primary mx-1" to="/" role="button" hidden={localStorage.getItem('isLoggedIn') === "false" }>Logout</Link>    
+                    <Link className="btn btn-primary mx-1" to="/login" role="button" hidden={localStorage.getItem('isLoggedIn') === "true" } >Login</Link>
+                    <Link className="btn btn-primary mx-2" to="/signup" role="button" hidden={localStorage.getItem('isLoggedIn') === "true" }>Signup</Link>
                     </form>
                 </div>
             </div>
