@@ -1,46 +1,60 @@
-import React from 'react'
-import UserHome from './UserHome';
+import React, { useEffect, useRef }  from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const DeleteAccount = () => { 
-    const data = confirm("Are you sure you want to delete accouunt?");
-    
-    const handleSubmit = async () => {
-        if(data === false) return;
-        let s = 'http://localhost:8080/api/users/delete' + localStorage.getItem('email');
-        const response = await fetch(s,
-         {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
+const DeleteAccount = () => {    
+
+    const navigate = useNavigate();
+    const isDeleting = useRef(false);
+  
+  useEffect(() => {
+    const handleDelete = async () => {
+      // Only proceed if we arrived here with confirmed: true in state
+      if (isDeleting.current) return;
+      isDeleting.current = true;
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Authentication token not found. Please log in again.');
+        navigate('/');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8080/api/users/delete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': token
+          }
         });
+
         const json = await response.json();
         console.log(json);
-        if (json.success){
-            // Save the auth token and redirect
-            alert(json.message);
-            localStorage.setItem('token',""); 
-            localStorage.setItem('isLoggedIn',"");
-            localStorage.setItem('email',"");
-            navigate("/");
 
+        if (json.success) {
+          alert(json.message);
+          // Clear storage only after successful deletion
+          localStorage.removeItem('token');
+          localStorage.removeItem('isLoggedIn');
+          localStorage.removeItem('email');
+          navigate('/');
+        } else {
+          alert(json.error);
+          navigate('/');
         }
-        else {
-           //<Alert message = json />
-            alert(json.error);
-            navigate("/");
-        }    
-    
-    }
+      } catch (error) {
+        console.error('Delete account error:', error);
+        alert('An error occurred while deleting the account.');
+        navigate('/e');
+      }
+    };
 
-    return (
-             <div style={{margin: '0', padding: '0', width: '215vh',marginLeft: '-20vh',height: '150vh',marginTop: '-3vh', position: 'relative', overflow: 'hidden'}}>             
-               {handleSubmit()}
-               <UserHome></UserHome>          
-             </div>
-        
-    );
-}
+    handleDelete();
+  }, []); // Run once when component mounts
+
+  // Show loading or return null since this is just a processing component
+  return null;
+};
 
 export default DeleteAccount;
