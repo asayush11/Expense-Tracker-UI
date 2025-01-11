@@ -17,6 +17,9 @@ import Login from './Components/Login';
 import Signup from './Components/SignUP';
 import UserHome from './Components/UserHome';
 import DeleteAccount from './Components/DeleteAccount';
+import Expenses from './Components/Expenses';
+import Loans from './Components/Loans';
+import ChangePassword from './Components/ChangePassword';
 
 function App() {
   localStorage.setItem('token',"");
@@ -33,7 +36,10 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/loans" element={<Loans />} />
             <Route path="/deleteAccount" element={<DeleteAccount />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/userHome" element={<UserHome />} />
           </Routes>
         </div>

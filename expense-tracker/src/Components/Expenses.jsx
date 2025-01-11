@@ -2,29 +2,34 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import expenseContext from "../context/expenses/expenseContext"
 import Expenseitem from './Expenseitem';
 import AddExpense from './AddExpense';
+import { Home } from './Home';
+import { useNavigate } from 'react-router-dom';
 
 const Expenses = () => {
+    if(localStorage.getItem('isLoggedIn') === "false") return <Home></Home>;
+    const navigate = useNavigate();
+
     const context = useContext(expenseContext);
-    const [expenses, setExpenses] = useState([]);
+    //const [expenses, setExpenses] = useState([]);
     const onChange1 = ()=>{
         setExpense({...expense, [e.target.name]: 0})
     }
-    //const { expenses, getExpenses, editExpense } = context;
+    const { expenses, getExpenses, editExpense } = context;
     useEffect(() => {
-      //  getExpenses()
-        // eslint-disable-next-line
+        if(getExpenses() === false) navigate("/");
+        //eslint-disable-next-line
     }, [])
     const ref = useRef(null)
     const refClose = useRef(null)
-    const [expense, setExpense] = useState({id: "", etitle: "", edescription: "", etag: ""})
+    const [expense, setExpense] = useState({id: "", edescription: "", eamount: 0.0, edate: "", emodeOfPayment: ""})
 
     const updateExpense = (currentExpense) => {
         ref.current.click();
-        setExpense({id: currentExpense._id, etitle: currentExpense.title, edescription: currentExpense.description, etag:currentExpense.tag})
+        setExpense({id: currentExpense._id, eamount: currentExpense.amount, edescription: currentExpense.description, edate:currentExpense.date, emodeOfPayment: currentExpense.modeOfPayment})
     }
 
     const handleClick = (e)=>{ 
-        editExpense(expense.id, expense.etitle, expense.edescription, expense.etag)
+        editExpense(expense.id, expense.eamount, expense.edescription, expense.edate, expense.emodeOfPayment)
         refClose.current.click();
     }
 
@@ -48,30 +53,33 @@ const Expenses = () => {
                         <div className="modal-body">
                             <form className="my-3">
                                 <div className="mb-3">
-                                    <label htmlFor="title" className="form-label">Title</label>
-                                    <input type="text" className="form-control" id="etitle" name="etitle" value={expense.etitle} aria-describedby="emailHelp" onChange={onChange} minLength={5} required/>
+                                    <label htmlFor="amount" className="form-label">Amount</label>
+                                    <input type="text" className="form-control" id="eamount" name="eamount" value={expense.eamount} onChange={onChange} required/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="description" className="form-label">Description</label>
-                                    <input type="text" className="form-control" id="edescription" name="edescription" value={expense.edescription} onChange={onChange} minLength={5} required/>
+                                    <input type="text" className="form-control" id="edescription" name="edescription" value={expense.edescription} onChange={onChange} minLength={1} required/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="tag" className="form-label">Tag</label>
-                                    <input type="text" className="form-control" id="etag" name="etag" value={expense.etag} onChange={onChange} />
+                                    <label htmlFor="date" className="form-label">Date</label>
+                                    <input type="date" className="form-control" id="edate" name="edate" value={expense.edate} onChange={onChange} />
                                 </div>
- 
+                                <div className="mb-3">
+                                    <label htmlFor="modeOfPayment" className="form-label">Payment Mode</label>
+                                    <input type="text" className="form-control" id="emodeOfPayment" name="emodeOfPayment" value={expense.emodeOfPayment} onChange={onChange} />
+                                </div>
                             </form>
                         </div>
                         <div className="modal-footer">
                             <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button disabled={expense.etitle.length<5 || expense.edescription.length<5} onClick={handleClick} type="button" className="btn btn-primary">Update Expense</button>
+                            <button disabled={expense.eamount === 0.0 || expense.edescription.length<1} onClick={handleClick} type="button" className="btn btn-primary">Update Expense</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className="row my-3">
-                <h2>You Expenses</h2>
+                <h2>Your Expenses</h2>
                 <div className="container mx-2"> 
                 {expenses.length===0 && 'No expenses to display'}
                 </div>

@@ -1,12 +1,12 @@
 import { Home } from './Home';
 
-export const UserHome = () => {
+export const Loans = () => {
     if(localStorage.getItem('isLoggedIn') === "false") return <Home></Home>;
     return (        
         <div>     
-            Welcome buddy, long go no see
+            Work in Progress!!
         </div>
     )
 }
 
-export default UserHome;
+export default Loans;
