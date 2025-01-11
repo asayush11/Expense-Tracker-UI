@@ -30,7 +30,16 @@ const Navbar = () => {
                             <Link className={`nav-link ${location.pathname==="/"? "active": ""}`} aria-current="page" to="/" hidden={localStorage.getItem('isLoggedIn') === "true" } >Home</Link>
                         </li>
                         <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname==="/userHome"? "active": ""}`} to="/userHome" hidden={localStorage.getItem('isLoggedIn') === "false" } >User Home</Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className={`nav-link ${location.pathname==="/about"? "active": ""}`} to="/about" hidden={localStorage.getItem('isLoggedIn') === "true" } >About</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname==="/expenses"? "active": ""}`} to="/expenses" hidden={localStorage.getItem('isLoggedIn') === "false" } >Expenses</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname==="/loans"? "active": ""}`} to="/loans" hidden={localStorage.getItem('isLoggedIn') === "false" } >Loans</Link>
                         </li>
 
                     </ul>
