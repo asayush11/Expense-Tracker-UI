@@ -1,13 +1,15 @@
+import { toast } from "react-toastify";
 import ExpenseContext from "./ExpenseContext";
 import { useState } from "react";
 
 const ExpenseState = (props) => {
   const expensesInitial = []
-  const [expenses, setExpenses] = useState(expensesInitial)  
+  const [expenses, setExpenses] = useState(expensesInitial)
 
   // Get all Expenses 
   const getExpenses = async () => {
-    // API Call     
+    // API Call 
+
     let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'GET',
@@ -17,14 +19,14 @@ const ExpenseState = (props) => {
         'Authorization': token
       }
     });
-    const json = await response.json() 
-    if(json.success){
-      alert(json.message);
+    const json = await response.json()
+    if (json.success) {
+      toast.info(json.message);
       setExpenses(json.data)
     }
-    else{
-      alert(json.error);
-      if(response.status == 401) return false;
+    else {
+      toast.error(json.error);
+      if (response.status === 401) return false;
     }
     return true;
   }
@@ -41,18 +43,22 @@ const ExpenseState = (props) => {
         'Accept': 'application/json',
         'Authorization': token
       },
-      body: JSON.stringify({description, amount, date, modeOfPayment})
+      body: JSON.stringify({ description, amount, date, modeOfPayment })
     });
 
     const expense = await response.json();
-    if(expense.success){
-      alert(expense.message);
+
+    if (response.status === 401) {
+      toast.error("Unauthenticated User");
+      return false;
+    }
+    if (expense.success) {
+      toast.info(expense.message);
       setExpenses(expenses.concat(expense.data))
     }
-    else{
-      alert(expense.error);
-      if(response.status == 401) return false;
-    }    
+    else {
+      toast.error(expense.error);
+    }
     return true;
   }
 
@@ -60,7 +66,7 @@ const ExpenseState = (props) => {
   const deleteExpense = async (id) => {
     // API Call
     let token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:8080/api/expenses/remove`+id, {
+    const response = await fetch(`http://localhost:8080/api/expenses/remove` + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -68,49 +74,76 @@ const ExpenseState = (props) => {
         'Authorization': token
       }
     });
-    const json = response.json(); 
-    if(json.success){
-       alert(json.message);
-       const newExpenses = expenses.filter((expense) => { return expense._id !== id })
-       setExpenses(newExpenses)
+    const json = await response.json();
+
+    if (response.status === 401) {
+      toast.error("Unauthenticated User");
+      return false;
     }
-    else{
-      alert(json.error);
-      if(response.status == 401) return false;
+    if (json.success) {
+      toast.info(json.message);
+      const newExpenses = expenses.filter((expense) => { return expense._id !== id })
+      setExpenses(newExpenses)
+    }
+    else {
+      toast.error(json.error);
     }
     return true;
+
   }
 
+  const showTotal = () => {
+    let total = 0;
+    for (let index = 0; index < expenses.length; index++) {
+      total += expenses[index].amount;      
+    }
+    return total;
+  }
+
+
   // Edit a Expense
-  const editExpense = async (id, title, description, tag) => {
+  const editExpense = async (id, amount, description, date, modeOfPayment) => {
     // API Call 
-    /*const response = await fetch(`http://localhost:8080/api/expenses/view`, {
+    let token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/api/expenses/edit`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': token
       },
-      body: JSON.stringify({title, description, tag})
+      body: JSON.stringify({ id, description, amount, date, modeOfPayment })
     });
-    const json = await response.json(); 
+    const json = await response.json();
 
-     let newExpenses = JSON.parse(JSON.stringify(expenses))
-    // Logic to edit in client
-    for (let index = 0; index < newExpenses.length; index++) {
-      const element = newExpenses[index];
-      if (element._id === id) {
-        newExpenses[index].title = title;
-        newExpenses[index].description = description;
-        newExpenses[index].tag = tag; 
-        break; 
+    if (response.status === 401) {
+      toast.error("Unauthenticated User");
+      return false;
+    }
+    if (json.success) {
+      toast.info(json.message);
+      let newExpenses = JSON.parse(JSON.stringify(expenses))
+      // Logic to edit in client
+      for (let index = 0; index < newExpenses.length; index++) {
+        const element = newExpenses[index];
+        if (element.id === id) {
+          newExpenses[index].amount = amount;
+          newExpenses[index].description = description;
+          newExpenses[index].date = date;
+          newExpenses[index].modeOfPayment = modeOfPayment;
+          break;
+        }
       }
-    }  
-    setExpenses(newExpenses);*/
+      setExpenses(newExpenses);
+    }
+    else {
+      toast.error(json.error);
+    }
+    return true;
   }
 
   return (
-    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses }}>
+    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses, showTotal }}>
       {props.children}
     </ExpenseContext.Provider>
   )

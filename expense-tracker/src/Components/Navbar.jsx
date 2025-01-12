@@ -45,7 +45,7 @@ const Navbar = () => {
                     </ul>
                     <form className="d-flex">                    
                     <button className="btn btn-primary mx-1"  hidden={localStorage.getItem('isLoggedIn') === "false" } onClick={deleteAccount} >Delete Account</button>    
-                    <Link className="btn btn-primary mx-1" to="/" role="button" hidden={localStorage.getItem('isLoggedIn') === "false" }>Logout</Link>    
+                    <Link className="btn btn-primary mx-1" to="/logout" role="button" hidden={localStorage.getItem('isLoggedIn') === "false" }>Logout</Link>    
                     <Link className="btn btn-primary mx-1" to="/login" role="button" hidden={localStorage.getItem('isLoggedIn') === "true" } >Login</Link>
                     <Link className="btn btn-primary mx-2" to="/signup" role="button" hidden={localStorage.getItem('isLoggedIn') === "true" }>Signup</Link>
                     </form>

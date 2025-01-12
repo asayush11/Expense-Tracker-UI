@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 const ChangePassword = () => {
     const [credentials, setCredentials] = useState({email: "", password: ""}) 
@@ -24,14 +25,13 @@ const ChangePassword = () => {
         console.log(json);
         if (json.success){
             // Save the auth token and redirect
-            alert(json.message);
+            toast.info(json.message);
             navigate("/login");
 
         }
         else {
            //<Alert message = json />
-            alert(json.error);
-            navigate("/");
+            toast.error(json.error);
         }
     }
 

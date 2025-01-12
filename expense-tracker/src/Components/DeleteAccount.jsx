@@ -1,5 +1,6 @@
 import React, { useEffect, useRef }  from 'react'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const DeleteAccount = () => {    
 
@@ -14,8 +15,8 @@ const DeleteAccount = () => {
 
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('Authentication token not found. Please log in again.');
-        navigate('/');
+        toast.error('Authentication token not found. Please log in again.');
+        navigate('/logout');
         return;
       }
 
@@ -33,20 +34,16 @@ const DeleteAccount = () => {
         console.log(json);
 
         if (json.success) {
-          alert(json.message);
-          // Clear storage only after successful deletion
-          localStorage.removeItem('token');
-          localStorage.removeItem('isLoggedIn');
-          localStorage.removeItem('email');
-          navigate('/');
+          toast.info(json.message);
+          navigate('/logout');
         } else {
-          alert(json.error);
-          navigate('/');
+          toast.error(json.error);
+          navigate('/logout');
         }
       } catch (error) {
         console.error('Delete account error:', error);
-        alert('An error occurred while deleting the account.');
-        navigate('/e');
+        toast.error('An error occurred while deleting the account.');
+        navigate('/logout');
       }
     };
 
