@@ -9,9 +9,10 @@ const AddExpense = () => {
 
     const [expense, setExpense] = useState({description: "", amount: 0.0, date: "", modeOfPayment: ""})
 
-    const handleClick = (e)=>{
+    const handleClick = async (e) => {
         e.preventDefault();
-        if(addExpense(expense.description, expense.amount, expense.date, expense.modeOfPayment) === false) navigate("/");
+        const isAdded = await addExpense(expense.description, expense.amount, expense.date, expense.modeOfPayment);
+        if (!isAdded) navigate("/logout");
         else setExpense({description: "", amount: 0.0, date: "", modeOfPayment: ""});
     }
 

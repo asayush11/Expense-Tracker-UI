@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Alert } from './Alert'
 import ChangePassword from './ChangePassword'
+import { toast } from 'react-toastify'
 
 
 const Login = (props) => {
@@ -23,7 +24,7 @@ const Login = (props) => {
         console.log(json);
         if (json.success){
             // Save the auth token and redirect
-            alert(json.message);
+            toast.info(json.message);
             localStorage.setItem('token', json.data); 
             localStorage.setItem('isLoggedIn',true);
             localStorage.setItem('email',credentials.email);
@@ -32,7 +33,7 @@ const Login = (props) => {
         }
         else {
            //<Alert message = json />
-            alert(json.error);
+            toast.error(json.error);
         }
     }
 

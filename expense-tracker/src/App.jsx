@@ -20,12 +20,30 @@ import DeleteAccount from './Components/DeleteAccount';
 import Expenses from './Components/Expenses';
 import Loans from './Components/Loans';
 import ChangePassword from './Components/ChangePassword';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { LogOut } from 'lucide-react';
+import { Logout } from './Components/Logout';
 
 function App() {
   localStorage.setItem('token',"");
   localStorage.setItem('isLoggedIn',false);
-  localStorage.setItem('email',"");
+  localStorage.removeItem('email');
   return (
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
     <ExpenseState>      
       <Router>
         <Navbar />
@@ -35,6 +53,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/loans" element={<Loans />} />
@@ -45,6 +64,7 @@ function App() {
         </div>
       </Router>
     </ExpenseState>  
+    </>
   );
 }
 

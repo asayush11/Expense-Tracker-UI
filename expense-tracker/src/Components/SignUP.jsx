@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({name: "", email: "", password: ""}) 
@@ -27,13 +28,13 @@ const Signup = () => {
             localStorage.setItem('token', json.data); 
             localStorage.setItem('isLoggedIn',true);
             localStorage.setItem('email',credentials.email);
-            alert(json.message);
+            toast.info(json.message);
             navigate("/userHome");
 
         }
         else {
            //<Alert message = json />
-            alert(json.error);
+            toast.error(json.error);
         }
     }
 

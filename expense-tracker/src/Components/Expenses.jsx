@@ -10,26 +10,26 @@ const Expenses = () => {
     const navigate = useNavigate();
 
     const context = useContext(expenseContext);
-    //const [expenses, setExpenses] = useState([]);
-    const onChange1 = ()=>{
-        setExpense({...expense, [e.target.name]: 0})
-    }
-    const { expenses, getExpenses, editExpense } = context;
-    useEffect(() => {
-        if(getExpenses() === false) navigate("/");
-        //eslint-disable-next-line
-    }, [])
+    
+    const { expenses, getExpenses, editExpense, setExpenses, showTotal } = context;
+    
     const ref = useRef(null)
     const refClose = useRef(null)
     const [expense, setExpense] = useState({id: "", edescription: "", eamount: 0.0, edate: "", emodeOfPayment: ""})
+    
+    useEffect(() => {
+        if(getExpenses() === false) navigate("/logout");
+    }, [setExpenses])     
+   
 
-    const updateExpense = (currentExpense) => {
+    const updateExpense = (currentExpense, currentID) => {
         ref.current.click();
-        setExpense({id: currentExpense._id, eamount: currentExpense.amount, edescription: currentExpense.description, edate:currentExpense.date, emodeOfPayment: currentExpense.modeOfPayment})
+        setExpense({id: currentID, eamount: currentExpense.amount, edescription: currentExpense.description, edate:currentExpense.date, emodeOfPayment: currentExpense.modeOfPayment})
     }
 
     const handleClick = (e)=>{ 
-        editExpense(expense.id, expense.eamount, expense.edescription, expense.edate, expense.emodeOfPayment)
+        e.preventDefault();
+        if(editExpense(expense.id, expense.eamount, expense.edescription, expense.edate, expense.emodeOfPayment) === false) navigate("/logout");
         refClose.current.click();
     }
 
@@ -39,7 +39,7 @@ const Expenses = () => {
 
     return (
         <>
-            <AddExpense />
+            
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Launch demo modal
             </button>
@@ -77,9 +77,8 @@ const Expenses = () => {
                     </div>
                 </div>
             </div>
-
             <div className="row my-3">
-                <h2>Your Expenses</h2>
+                <h2>You have spent a total of INR {showTotal()} so far which are summarised below:</h2>
                 <div className="container mx-2"> 
                 {expenses.length===0 && 'No expenses to display'}
                 </div>
@@ -87,6 +86,7 @@ const Expenses = () => {
                     return <Expenseitem key={expense._id} updateExpense={updateExpense} expense={expense} />
                 })}
             </div>
+            <AddExpense />
         </>
     )
 }
