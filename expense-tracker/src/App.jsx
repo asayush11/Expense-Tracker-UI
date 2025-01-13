@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Navbar from './Components/Navbar';
 import ExpenseState from './Context/expenses/ExpenseState';
+import LoanState from './Context/loans/LoanState';
 import { Alert } from './Components/Alert';
 import { Home } from './Components/Home';
 import About from './Components/About';
@@ -41,7 +42,8 @@ function App() {
         theme="light"
       />
 
-    <ExpenseState>      
+    <ExpenseState>
+    <LoanState>        
       <Router>
         <Navbar />
         <Alert message="Welcome to my Expense Tracker App" />
@@ -60,6 +62,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      </LoanState>  
     </ExpenseState>  
     </>
   );
