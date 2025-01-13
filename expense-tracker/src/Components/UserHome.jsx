@@ -5,21 +5,21 @@ import expenseContext from "../context/expenses/expenseContext"
 export const UserHome = () => {
     if(localStorage.getItem('token') === "") return <Home></Home>;
     const context = useContext(expenseContext);
-    const { showTotal, getExpensesByPaymentMode } = context;    
+    const { getExpensesByPaymentMode } = context;    
     const [ expenses, setExpenses ] = useState([]);
     const [ loading, setloading ] = useState(true);    
-    const totalexpense = 0;
+    const [ totalExpense, setTotalExpense ] = useState(0);
     
-    async function ExpensesByPaymentMode() {
-        const [ data, validUser ] = await getExpensesByPaymentMode();
+    async function expensesByPaymentMode() {
+        const [ data, validUser, total ] = await getExpensesByPaymentMode();
         if( validUser === false ) return <Home></Home>;
         setExpenses(data);
-        setloading(false);
-        totalexpense = showTotal();
+        setTotalExpense( total );
+        setloading(false);        
     }
 
     useEffect(() => {
-        ExpensesByPaymentMode();
+        expensesByPaymentMode();
     }, [])
     
     if(loading) return <div>Loading data...</div>
@@ -27,7 +27,7 @@ export const UserHome = () => {
     return (        
         <div>     
             Welcome buddy, long go no see
-            <h2>You have spent a total of INR {totalexpense} so far which are summarised in Expenses section</h2>           
+            <h2>You have spent a total of INR {totalExpense} so far which are summarised in Expenses section</h2>           
             <table>
                 <thead>
                     <tr>

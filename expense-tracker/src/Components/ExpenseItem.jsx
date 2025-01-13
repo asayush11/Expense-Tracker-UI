@@ -12,8 +12,11 @@ const Expenseitem = (props) => {
 
     const handleDelete = async (e) => {
         e.preventDefault();
+        const confirmed = confirm("Are you sure you want to delete this expense?");
+        if(confirmed){      
         const isDeleted = await deleteExpense(expense.id);
         if (!isDeleted) navigate("/logout");
+        }
     };
 
     return (

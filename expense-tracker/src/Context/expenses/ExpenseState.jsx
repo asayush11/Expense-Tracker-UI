@@ -5,6 +5,10 @@ import { useState } from "react";
 const ExpenseState = (props) => {
   const expensesInitial = []
   const [expenses, setExpenses] = useState(expensesInitial)
+  
+  const refreshExpenses = () => {
+        setExpenses([]);
+  }
 
   // Get all Expenses 
   const getExpenses = async () => {
@@ -92,14 +96,6 @@ const ExpenseState = (props) => {
 
   }
 
-  const showTotal = () => {
-    let total = 0;
-    for (let index = 0; index < expenses.length; index++) {
-      total += expenses[index].amount;      
-    }
-    return total;
-  }
-
 
   // Edit a Expense
   const editExpense = async (id, amount, description, date, modeOfPayment) => {
@@ -127,7 +123,7 @@ const ExpenseState = (props) => {
       for (let index = 0; index < newExpenses.length; index++) {
         const element = newExpenses[index];
         if (element.id === id) {
-          newExpenses[index].amount = amount;
+          newExpenses[index].amount = Number(amount);
           newExpenses[index].description = description;
           newExpenses[index].date = date;
           newExpenses[index].modeOfPayment = modeOfPayment;
@@ -146,6 +142,7 @@ const ExpenseState = (props) => {
   const getExpensesByPaymentMode = async () => {
     // API Call 
     let expensesByPaymentMode = [];
+    let total = 0;    
     let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/expenses/view/modeOfPayment`, {
       method: 'GET',
@@ -159,21 +156,24 @@ const ExpenseState = (props) => {
 
     if (response.status === 401) {
       toast.error("Unauthenticated User");
-      return [ expensesByPaymentMode, false ];;
+      return [ expensesByPaymentMode, false, total ];;
     }
 
     if (json.success) {
       toast.info(json.message);
       expensesByPaymentMode = (json.data);
+      for (let index = 0; index < expensesByPaymentMode.length; index++) {
+        total += expensesByPaymentMode[index].amount;      
+      }
     }
     else {
       toast.error(json.error);
     }
-    return [ expensesByPaymentMode, true ];
+    return [ expensesByPaymentMode, true, total ];
   }
 
   return (
-    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses, showTotal, getExpensesByPaymentMode }}>
+    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses, getExpensesByPaymentMode, refreshExpenses }}>
       {props.children}
     </ExpenseContext.Provider>
   )
