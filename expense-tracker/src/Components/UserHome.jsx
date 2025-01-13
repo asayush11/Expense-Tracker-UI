@@ -1,6 +1,7 @@
 import { Home } from './Home';
 import { useContext, useEffect, useState } from 'react';
 import expenseContext from "../context/expenses/expenseContext"
+import loanContext from '../Context/loans/LoanContext';
 
 export const UserHome = () => {
     if(localStorage.getItem('token') === "") return <Home></Home>;

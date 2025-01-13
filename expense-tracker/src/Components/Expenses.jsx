@@ -92,7 +92,7 @@ const Expenses = () => {
                 {expenses.length===0 && 'No expenses to display'}
                 </div>
                 {expenses.map((expense) => {
-                    return <Expenseitem key={expense._id} updateExpense={updateExpense} expense={expense} />
+                    return <Expenseitem key={expense.id} updateExpense={updateExpense} expense={expense} />
                 })}
             </div>
             <AddExpense />
