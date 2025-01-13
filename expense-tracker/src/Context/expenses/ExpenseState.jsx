@@ -142,8 +142,38 @@ const ExpenseState = (props) => {
     return true;
   }
 
+  // Get all Expenses 
+  const getExpensesByPaymentMode = async () => {
+    // API Call 
+    let expensesByPaymentMode = [];
+    let token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/api/expenses/view/modeOfPayment`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token
+      }
+    });
+    const json = await response.json()
+
+    if (response.status === 401) {
+      toast.error("Unauthenticated User");
+      return [ expensesByPaymentMode, false ];;
+    }
+
+    if (json.success) {
+      toast.info(json.message);
+      expensesByPaymentMode = (json.data);
+    }
+    else {
+      toast.error(json.error);
+    }
+    return [ expensesByPaymentMode, true ];
+  }
+
   return (
-    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses, showTotal }}>
+    <ExpenseContext.Provider value={{ expenses, addExpense, deleteExpense, editExpense, getExpenses, showTotal, getExpensesByPaymentMode }}>
       {props.children}
     </ExpenseContext.Provider>
   )

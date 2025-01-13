@@ -25,9 +25,7 @@ const Signup = () => {
         console.log(json);
         if (json.success){
             // Save the auth token and redirect
-            localStorage.setItem('token', json.data); 
-            localStorage.setItem('isLoggedIn',true);
-            localStorage.setItem('email',credentials.email);
+            localStorage.setItem('token', json.data);
             toast.info(json.message);
             navigate("/userHome");
 

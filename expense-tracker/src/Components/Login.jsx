@@ -25,9 +25,7 @@ const Login = (props) => {
         if (json.success){
             // Save the auth token and redirect
             toast.info(json.message);
-            localStorage.setItem('token', json.data); 
-            localStorage.setItem('isLoggedIn',true);
-            localStorage.setItem('email',credentials.email);
+            localStorage.setItem('token', json.data);
             navigate("/userHome");
 
         }

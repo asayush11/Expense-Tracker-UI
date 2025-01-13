@@ -26,9 +26,6 @@ import { LogOut } from 'lucide-react';
 import { Logout } from './Components/Logout';
 
 function App() {
-  localStorage.setItem('token',"");
-  localStorage.setItem('isLoggedIn',false);
-  localStorage.removeItem('email');
   return (
     <>
       <ToastContainer

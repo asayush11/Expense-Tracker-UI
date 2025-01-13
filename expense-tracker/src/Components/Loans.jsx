@@ -1,7 +1,7 @@
 import { Home } from './Home';
 
 export const Loans = () => {
-    if(localStorage.getItem('isLoggedIn') === "false") return <Home></Home>;
+    if(localStorage.getItem('token') === "") return <Home></Home>;
     return (        
         <div>     
             Work in Progress!!

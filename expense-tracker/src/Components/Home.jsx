@@ -1,9 +1,7 @@
 import HomePage from '../../HomePage.png';
 
 export const Home = () => {
-    localStorage.setItem('isLoggedIn',false);
     localStorage.setItem('token',"");
-    localStorage.setItem('email',"");
     return (
         <div style={{margin: '0', padding: '0', width: '215vh',marginLeft: '-20vh',height: '150vh',marginTop: '-3vh', position: 'relative', overflow: 'hidden'}}>     
                      

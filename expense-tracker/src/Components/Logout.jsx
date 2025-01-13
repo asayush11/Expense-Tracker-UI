@@ -7,9 +7,7 @@ export const Logout = () => {
   useEffect(() => {
     const handleLogout = () => {
       // Clear all localStorage items
-      localStorage.setItem('isLoggedIn', false);
       localStorage.setItem('token', "");
-      localStorage.setItem('email', "");
 
       // Use navigate inside useEffect
       navigate('/', { replace: true });

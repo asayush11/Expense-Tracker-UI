@@ -6,12 +6,12 @@ import { Home } from './Home';
 import { useNavigate } from 'react-router-dom';
 
 const Expenses = () => {
-    if(localStorage.getItem('isLoggedIn') === "false") return <Home></Home>;
+    if(localStorage.getItem('token') === "") return <Home></Home>;
     const navigate = useNavigate();
 
     const context = useContext(expenseContext);
     
-    const { expenses, getExpenses, editExpense, setExpenses, showTotal } = context;
+    const { expenses, getExpenses, editExpense, setExpenses } = context;
     
     const ref = useRef(null)
     const refClose = useRef(null)
@@ -78,7 +78,7 @@ const Expenses = () => {
                 </div>
             </div>
             <div className="row my-3">
-                <h2>You have spent a total of INR {showTotal()} so far which are summarised below:</h2>
+                <h2>Your Expenses:</h2>
                 <div className="container mx-2"> 
                 {expenses.length===0 && 'No expenses to display'}
                 </div>
