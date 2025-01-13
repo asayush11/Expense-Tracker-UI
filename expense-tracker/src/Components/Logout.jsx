@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import expenseContext from "../context/expenses/expenseContext"
 
 export const Logout = () => {
   const navigate = useNavigate();
+  const context = useContext(expenseContext);
+  const { refreshExpenses } = context; 
 
   useEffect(() => {
     const handleLogout = () => {
       // Clear all localStorage items
       localStorage.setItem('token', "");
-
+      refreshExpenses([]);  
       // Use navigate inside useEffect
       navigate('/', { replace: true });
     };

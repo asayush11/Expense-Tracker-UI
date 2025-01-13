@@ -15,10 +15,17 @@ const Expenses = () => {
     
     const ref = useRef(null)
     const refClose = useRef(null)
-    const [expense, setExpense] = useState({id: "", edescription: "", eamount: 0.0, edate: "", emodeOfPayment: ""})
+    const [expense, setExpense] = useState({id: "", edescription: "", eamount: "", edate: "", emodeOfPayment: ""})
+    const [ loading, setloading ] = useState(true);
     
+    async function getAllExpenses() {
+        const validUser = await getExpenses();
+        if( validUser === false ) navigate("/logout");;
+        setloading(false);
+    }
+
     useEffect(() => {
-        if(getExpenses() === false) navigate("/logout");
+        getAllExpenses();
     }, [setExpenses])     
    
 
@@ -37,6 +44,8 @@ const Expenses = () => {
         setExpense({...expense, [e.target.name]: e.target.value})
     }
 
+    if(loading) return <div>Loading data...</div>
+
     return (
         <>
             
@@ -54,7 +63,7 @@ const Expenses = () => {
                             <form className="my-3">
                                 <div className="mb-3">
                                     <label htmlFor="amount" className="form-label">Amount</label>
-                                    <input type="text" className="form-control" id="eamount" name="eamount" value={expense.eamount} onChange={onChange} required/>
+                                    <input type="number" className="form-control" id="eamount" name="eamount" value={expense.eamount} onChange={onChange} required/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="description" className="form-label">Description</label>
@@ -72,7 +81,7 @@ const Expenses = () => {
                         </div>
                         <div className="modal-footer">
                             <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button disabled={expense.eamount === 0.0 || expense.edescription.length<1} onClick={handleClick} type="button" className="btn btn-primary">Update Expense</button>
+                            <button disabled={expense.eamount === 0 || expense.edescription.length<1} onClick={handleClick} type="button" className="btn btn-primary">Update Expense</button>
                         </div>
                     </div>
                 </div>

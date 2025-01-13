@@ -40,7 +40,7 @@ const AddExpense = () => {
                     <input type="text" className="form-control" id="modeOfPayment" name="modeOfPayment" value={expense.modeOfPayment} onChange={onChange} />
                 </div>
                
-                <button disabled={expense.amount === 0.0 || expense.description.length<1} type="submit" className="btn btn-primary" onClick={handleClick}>Add Expense</button>
+                <button disabled={expense.amount === 0 || expense.description.length<1} type="submit" className="btn btn-primary" onClick={handleClick}>Add Expense</button>
             </form>
         </div>
     )
