@@ -1,13 +1,14 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Alert } from './Alert'
-import ChangePassword from './ChangePassword'
 import { toast } from 'react-toastify'
+import authContext from '../Context/auth/AuthContext'
 
 
 const Login = (props) => {
     const [credentials, setCredentials] = useState({email: "", password: ""}) 
     let navigate = useNavigate();
+    const context = useContext(authContext);
+    const { setAuthToken } = context;
 
     const handleSubmit = async (e) => {
         let s = 'http://localhost:8080/api/users/validate?email=' + credentials.email + '&password=' + credentials.password;
@@ -25,7 +26,7 @@ const Login = (props) => {
         if (json.success){
             // Save the auth token and redirect
             toast.info(json.message);
-            localStorage.setItem('token', json.data);
+            await setAuthToken(json.data);
             navigate("/userHome");
 
         }

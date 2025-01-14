@@ -2,9 +2,12 @@ import { Home } from './Home';
 import { useContext, useEffect, useState } from 'react';
 import expenseContext from "../context/expenses/expenseContext"
 import loanContext from '../Context/loans/LoanContext';
+import authContext from '../Context/auth/AuthContext';
 
 export const UserHome = () => {
-    if(localStorage.getItem('token') === "") return <Home></Home>;
+    const context = useContext(authContext);
+    const { authToken } = context;
+    if(authToken === "") return <Home></Home>;
     const contextExpense = useContext(expenseContext);
     const { getExpensesByPaymentMode } = contextExpense;    
     const [ expenses, setExpenses ] = useState([]);           
@@ -52,44 +55,47 @@ export const UserHome = () => {
 
     return (        
         <div>     
-            Welcome buddy, long go no see
-            <h2>You have spent a total of INR {totalExpense} so far which are categorised as</h2>           
-            <table>
+            <h2>Welcome buddy, long go no see</h2>
+            { totalExpense !== 0 && <h3>You have spent a total of INR {totalExpense} so far which are categorised as</h3> }          
+            { totalExpense !== 0 && <table style={{ width: "20%", borderSpacing: "0 10px"}}>
                 <thead>
                     <tr>
-                        <th>Payment Mode</th>
-                        <th>Amount</th>
+                        <th style={{padding: "10px"}}>Payment Mode</th>
+                        <th style={{padding: "10px"}}>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     {expenses.map((expense, index) => 
                     (
-                        <tr key={index}>
-                        <td>{expense.category}</td>
-                        <td>{expense.amount}</td>
+                        <tr key={index} style={{padding: "10px"}}>
+                        <td style={{padding: "10px"}}>{expense.category}</td>
+                        <td style={{padding: "10px"}}>{expense.amount}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            }
+            { totalExpense === 0 && <h3>You have no expenses as of now</h3> } 
+            { totalLoan === 0 && <h3>You have neither given nor taken any loans as of now</h3> }
             {totalLoan > 0 && 
-            <h2>Overall you are owed a total of INR {totalLoan} so far which are summarised as</h2> 
+            <h3>Overall you are owed a total of INR {totalLoan} so far which are summarised as</h3> 
             }
             {totalLoan < 0 && 
-            <h2>Overall you owe a total of INR {Math.abs(totalLoan)} so far which are summarised as</h2> 
+            <h3>Overall you owe a total of INR {Math.abs(totalLoan)} so far which are summarised as</h3> 
             }          
-            <table>
+            { totalLoan !== 0 && <table style={{ width: "30%", borderSpacing: "0 10px"}}>
                 <thead>
                     <tr>
-                        <th>Payment Mode</th>
-                        <th>Amount</th>
+                        <th style={{padding: "10px"}}>Payment Mode</th>
+                        <th style={{padding: "10px"}}>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     {loans.map((loan, index) => 
                     (
-                        <tr key={index}>
-                        <td>{loan.category}</td>
-                        <td>{loan.amount}</td>
+                        <tr key={index} style={{padding: "10px"}}>
+                        <td style={{padding: "10px"}}>{loan.category}</td>
+                        <td style={{padding: "10px"}}>{loan.amount}</td>
                         <td>
                         <button className="btn btn-primary" onClick={()=>handleClick(loan.category)}>Settle {loan.category}</button>
                         </td>
@@ -97,6 +103,7 @@ export const UserHome = () => {
                     ))}
                 </tbody>
             </table>
+            }
         </div>
     )
 }

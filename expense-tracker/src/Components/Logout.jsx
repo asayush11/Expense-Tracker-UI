@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useContext } from 'react';
 import expenseContext from "../context/expenses/expenseContext"
 import loanContext from "../Context/loans/LoanContext";
+import authContext from "../Context/auth/AuthContext";
 
 export const Logout = () => {
   const navigate = useNavigate();
@@ -9,13 +10,14 @@ export const Logout = () => {
   const { refreshExpenses } = context; 
   const context1 = useContext(loanContext);
   const { refreshLoans } = context1; 
+  const context2 = useContext(authContext);
+  const { refreshAuthToken } = context2; 
 
   useEffect(() => {
-    const handleLogout = () => {
-      // Clear all localStorage items
-      localStorage.setItem('token', "");
-      refreshExpenses([]);
-      refreshLoans([]);  
+    const handleLogout = () => {      
+      refreshExpenses();
+      refreshLoans();  
+      refreshAuthToken();
       // Use navigate inside useEffect
       navigate('/', { replace: true });
     };

@@ -1,7 +1,11 @@
 import HomePage from '../../HomePage.png';
+import { useContext } from 'react';
+import authContext from '../Context/auth/AuthContext';
 
 export const Home = () => {
-    localStorage.setItem('token',"");
+    const context = useContext(authContext);
+    const { refreshAuthToken } = context;
+    refreshAuthToken();
     return (
         <div style={{margin: '0', padding: '0', width: '215vh',marginLeft: '-20vh',height: '150vh',marginTop: '-3vh', position: 'relative', overflow: 'hidden'}}>     
                      

@@ -23,8 +23,8 @@ import Loans from './Components/Loans';
 import ChangePassword from './Components/ChangePassword';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LogOut } from 'lucide-react';
 import { Logout } from './Components/Logout';
+import AuthState from './Context/auth/AuthState';
 
 function App() {
   return (
@@ -41,7 +41,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
-
+   <AuthState>
     <ExpenseState>
     <LoanState>        
       <Router>
@@ -63,7 +63,8 @@ function App() {
         </div>
       </Router>
       </LoanState>  
-    </ExpenseState>  
+    </ExpenseState> 
+    </AuthState> 
     </>
   );
 }
