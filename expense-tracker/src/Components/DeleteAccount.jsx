@@ -1,20 +1,22 @@
-import React, { useEffect, useRef }  from 'react'
+import React, { useEffect, useRef, useContext }  from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import authContext from '../Context/auth/AuthContext';
 
 const DeleteAccount = () => {    
 
     const navigate = useNavigate();
     const isDeleting = useRef(false);
+    const context = useContext(authContext);
+    const { authToken } = context;
   
   useEffect(() => {
     const handleDelete = async () => {
       // Only proceed if we arrived here with confirmed: true in state
       if (isDeleting.current) return;
       isDeleting.current = true;
-
-      const token = localStorage.getItem('token');
-      if (!token) {
+      
+      if (!authToken) {
         toast.error('Authentication token not found. Please log in again.');
         navigate('/logout');
         return;
@@ -26,7 +28,7 @@ const DeleteAccount = () => {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': token
+            'Authorization': authToken
           }
         });
 

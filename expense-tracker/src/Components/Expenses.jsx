@@ -4,14 +4,16 @@ import Expenseitem from './Expenseitem';
 import AddExpense from './AddExpense';
 import { Home } from './Home';
 import { useNavigate } from 'react-router-dom';
+import authContext from '../Context/auth/AuthContext';
 
 const Expenses = () => {
-    if(localStorage.getItem('token') === "") return <Home></Home>;
+    const context1 = useContext(authContext);
+    const { authToken } = context1;
+    if(authToken === "") return <Home></Home>;
     const navigate = useNavigate();
 
-    const context = useContext(expenseContext);
-    
-    const { expenses, getExpenses, editExpense, setExpenses } = context;
+    const context = useContext(expenseContext);   
+    const { expenses, getExpenses, editExpense, setExpenses } = context;    
     
     const ref = useRef(null)
     const refClose = useRef(null)

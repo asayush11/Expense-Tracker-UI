@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import authContext from '../Context/auth/AuthContext';
 
 const Signup = () => {
     const [credentials, setCredentials] = useState({name: "", email: "", password: ""}) 
     let navigate = useNavigate();
+    const context = useContext(authContext);
+    const { setAuthToken } = context;
 
     const handleSubmit = async (e) => {        
         e.preventDefault();
@@ -25,7 +28,7 @@ const Signup = () => {
         console.log(json);
         if (json.success){
             // Save the auth token and redirect
-            localStorage.setItem('token', json.data);
+            await setAuthToken(json.data);
             toast.info(json.message);
             navigate("/userHome");
 

@@ -1,10 +1,14 @@
 import { toast } from "react-toastify";
+import { useContext } from "react";
 import ExpenseContext from "./ExpenseContext";
 import { useState } from "react";
+import authContext from "../auth/AuthContext";
 
 const ExpenseState = (props) => {
   const expensesInitial = []
   const [expenses, setExpenses] = useState(expensesInitial)
+  const context = useContext(authContext);
+  const { authToken } = context;
   
   const refreshExpenses = () => {
         setExpenses([]);
@@ -13,14 +17,12 @@ const ExpenseState = (props) => {
   // Get all Expenses 
   const getExpenses = async () => {
     // API Call 
-
-    let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/expenses/view`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json()
@@ -37,15 +39,13 @@ const ExpenseState = (props) => {
 
   // Add a Expense
   const addExpense = async (description, amount, date, modeOfPayment) => {
-    // TODO: API Call
-    // API Call     
-    let token = localStorage.getItem('token');
+    // API Call 
     const response = await fetch(`http://localhost:8080/api/expenses/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       },
       body: JSON.stringify({ description, amount, date, modeOfPayment })
     });
@@ -69,13 +69,12 @@ const ExpenseState = (props) => {
   // Delete a Expense
   const deleteExpense = async (id) => {
     // API Call
-    let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/expenses/remove` + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json();
@@ -99,14 +98,13 @@ const ExpenseState = (props) => {
 
   // Edit a Expense
   const editExpense = async (id, amount, description, date, modeOfPayment) => {
-    // API Call 
-    let token = localStorage.getItem('token');
+    // API Call
     const response = await fetch(`http://localhost:8080/api/expenses/edit`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       },
       body: JSON.stringify({ id, description, amount, date, modeOfPayment })
     });
@@ -142,14 +140,13 @@ const ExpenseState = (props) => {
   const getExpensesByPaymentMode = async () => {
     // API Call 
     let expensesByPaymentMode = [];
-    let total = 0;    
-    let token = localStorage.getItem('token');
+    let total = 0;
     const response = await fetch(`http://localhost:8080/api/expenses/view/modeOfPayment`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json()

@@ -1,11 +1,15 @@
 import { toast } from "react-toastify";
+import { useContext } from "react";
 import LoanContext from "./LoanContext";
 import { useState } from "react";
+import authContext from "../auth/AuthContext";
 
 const LoanState = (props) => {
   const loansInitial = []
   const [loans, setLoans] = useState(loansInitial)
-  
+  const context = useContext(authContext);
+  const { authToken } = context;
+
   const refreshLoans = () => {
         setLoans([]);
   }
@@ -13,15 +17,13 @@ const LoanState = (props) => {
   // Get all Loans 
   const getLoans = async () => {
     // API Call 
-
-    let token = localStorage.getItem('token');
     let allLoans = [];
     let response = await fetch(`http://localhost:8080/api/loans/view/taken`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     let json = await response.json()
@@ -43,7 +45,7 @@ const LoanState = (props) => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     json = await response.json()
@@ -64,15 +66,13 @@ const LoanState = (props) => {
 
   // Add a Loan
   const addLoan = async (name, description, amount, date, modeOfPayment, loanType) => {
-    // TODO: API Call
-    // API Call     
-    let token = localStorage.getItem('token');
+    // API Call 
     const response = await fetch(`http://localhost:8080/api/loans/addLoan` + loanType, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       },
       body: JSON.stringify({ name, description, amount, date, modeOfPayment })
     });
@@ -96,13 +96,12 @@ const LoanState = (props) => {
   // Delete a Loan
   const deleteLoan = async (id) => {
     // API Call
-    let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/loans/remove` + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json();
@@ -126,13 +125,12 @@ const LoanState = (props) => {
   // Settle a friend
   const settleFriend = async (name, updatedLoans) => {
     // API Call
-    let token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8080/api/loans/settlefriend?name=' + name, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json();
@@ -158,7 +156,6 @@ const LoanState = (props) => {
   // Edit a Loan
   const editLoan = async (id, name, amount, description, date, modeOfPayment, loanType) => {
     // API Call 
-    let token = localStorage.getItem('token');
     amount = Math.abs(Number(amount));
     if(loanType === "Taken") amount*=-1;
 
@@ -167,7 +164,7 @@ const LoanState = (props) => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       },
       body: JSON.stringify({ id, name, description, amount, date, modeOfPayment })
     });
@@ -205,13 +202,12 @@ const LoanState = (props) => {
     // API Call 
     let loansByFriend = [];
     let total = 0;
-    let token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/loans/view`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token
+        'Authorization': authToken
       }
     });
     const json = await response.json()

@@ -4,9 +4,12 @@ import Loanitem from './Loanitem';
 import AddLoan from './AddLoan';
 import { Home } from './Home';
 import { useNavigate } from 'react-router-dom';
+import authContext from '../Context/auth/AuthContext';
 
 const Loans = () => {
-    if(localStorage.getItem('token') === "") return <Home></Home>;
+    const context1 = useContext(authContext);
+    const { authToken } = context1;
+    if(authToken === "") return <Home></Home>;
     const navigate = useNavigate();
 
     const context = useContext(loanContext);
