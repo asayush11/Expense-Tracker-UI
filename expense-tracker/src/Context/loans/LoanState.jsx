@@ -113,13 +113,44 @@ const LoanState = (props) => {
     }
     if (json.success) {
       toast.info(json.message);
-      const newLoans = loans.filter((loan) => { return loan._id !== id })
+      const newLoans = loans.filter((loan) => { return loan.id !== id })
       setLoans(newLoans)
     }
     else {
       toast.error(json.error);
     }
     return true;
+
+  }
+
+  // Settle a friend
+  const settleFriend = async (name, updatedLoans) => {
+    // API Call
+    let token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:8080/api/loans/settlefriend?name=' + name, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token
+      }
+    });
+    const json = await response.json();
+
+    if (response.status === 401) {
+      toast.error("Unauthenticated User");
+      return [ false, updatedLoans ];
+    }
+    if (json.success) {
+      toast.info(json.message);
+      const newLoans = loans.filter((loan) => { return loan.name !== name })
+      updatedLoans = updatedLoans.filter((loan) => loan.category !== name);
+      setLoans(newLoans)
+    }
+    else {
+      toast.error(json.error);
+    }
+    return [ true, updatedLoans ];
 
   }
 
@@ -170,11 +201,12 @@ const LoanState = (props) => {
   }
 
   // Get all Loans 
-  const getLoansByPaymentMode = async () => {
+  const getLoansByFriend = async () => {
     // API Call 
-    let loansByPaymentMode = [];
+    let loansByFriend = [];
+    let total = 0;
     let token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:8080/api/loans/view/modeOfPayment`, {
+    const response = await fetch(`http://localhost:8080/api/loans/view`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -186,21 +218,24 @@ const LoanState = (props) => {
 
     if (response.status === 401) {
       toast.error("Unauthenticated User");
-      return [ loansByPaymentMode, false ];;
+      return [ loansByFriend, false, total ];;
     }
 
     if (json.success) {
       toast.info(json.message);
-      loansByPaymentMode = (json.data);
+      loansByFriend = (json.data);
+      for (let index = 0; index < loansByFriend.length; index++) {
+        total += loansByFriend[index].amount;      
+      }
     }
     else {
       toast.error(json.error);
     }
-    return [ loansByPaymentMode, true ];
+    return [ loansByFriend, true, total ];
   }
 
   return (
-    <LoanContext.Provider value={{ loans, addLoan, deleteLoan, editLoan, getLoans, getLoansByPaymentMode, refreshLoans }}>
+    <LoanContext.Provider value={{ loans, addLoan, deleteLoan, editLoan, getLoans, getLoansByFriend, refreshLoans, settleFriend }}>
       {props.children}
     </LoanContext.Provider>
   )

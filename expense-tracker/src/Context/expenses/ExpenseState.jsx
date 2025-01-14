@@ -86,7 +86,7 @@ const ExpenseState = (props) => {
     }
     if (json.success) {
       toast.info(json.message);
-      const newExpenses = expenses.filter((expense) => { return expense._id !== id })
+      const newExpenses = expenses.filter((expense) => { return expense.id !== id })
       setExpenses(newExpenses)
     }
     else {

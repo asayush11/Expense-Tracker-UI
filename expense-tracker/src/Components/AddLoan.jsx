@@ -56,7 +56,7 @@ const AddLoan = () => {
                     >
                         <option value="">Select loan type</option>
                         <option value="Taken">Loan Taken</option>
-                        <option value="Lent">Loan Lent</option>
+                        <option value="Given">Loan Given</option>
                     </select>
                 </div>
 
